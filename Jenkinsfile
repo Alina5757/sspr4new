@@ -2,10 +2,13 @@ pipeline {
     agent any
     
     stages {
-        stage('Cloning Git') {
+        stage('Cloning Image') {
           steps {
-	      echo "start stage - Cloning Git!!!!!!!!"
-              git([url: 'https://github.com/Alina5757/sspr4new.git', branch: 'main'])
+	      echo "start stage - Cloning Image!!!!!!!!"
+	      withCredentials([string(credentialsId: 'sspr_4', variable: 'sspr4')]) {
+                    bat "docker login --username aln505 --password ${sspr4}"
+                    bat 'docker pull aln505/sspr4:latest'
+                }
           }
         }
         stage('Build') {
