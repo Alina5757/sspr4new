@@ -29,7 +29,7 @@ pipeline {
         stage("Push Image To Docker Hub") {
             steps {
 		echo "start stage - Push To Git!!!!"
-                withCredentials([string(credentialsId: 'dockerhub', variable: 'sspr4')]) {
+                withCredentials([string(credentialsId: 'sspr_4', variable: 'sspr4')]) {
                     bat "docker login --username Alina5757 --password ${sspr4}"
                     bat 'docker push aln505/sspr4:latest'
                 }
