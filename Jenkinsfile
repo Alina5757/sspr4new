@@ -4,17 +4,20 @@ pipeline {
     stages {
         stage('Cloning Git') {
           steps {
+	      echo "start stage - Cloning Git!!!!!!!!"
               git([url: 'https://github.com/Alina5757/sspr4new.git', branch: 'main'])
           }
         }
         stage('Build') {
 
 			steps {
+				echo "start stage - Build!!!!"
 				bat 'docker build -t aln505/sspr4:latest .'
 			}
 		}
         stage('Test') {
             steps {
+		                echo "start stage - Test!!!!!"
 				bat 'FOR /F "tokens=*" %%i IN (\'docker ps -a -q\') DO docker stop %%i'
 				bat 'docker rm "test_sspr"'
 				bat 'docker run -d --name "test_sspr" aln505/sspr4:latest bash'
@@ -25,7 +28,8 @@ pipeline {
 
         stage("Push Image To Docker Hub") {
             steps {
-                withCredentials([string(credentialsId: 'aln505', variable: 'aln505')]) {
+		echo "start stage - Push To Git!!!!"
+                withCredentials([string(credentialsId: 'dockerhub', variable: 'aln505')]) {
                     bat "docker login --username aln505 --password ${aln505}"
                     bat 'docker push aln505/sspr4:latest'
                 }
