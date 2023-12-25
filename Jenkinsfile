@@ -4,20 +4,20 @@ pipeline {
     stages {
         stage('Cloning Git') {
           steps {
-              git([url: 'https://github.com/mlnrzm/sspr-lab4.git', branch: 'master'])
+              git([url: 'https://github.com/Alina5757/sspr4new.git', branch: 'main'])
           }
         }
         stage('Build') {
 
 			steps {
-				bat 'docker build -t mlnrzm/sspr4:latest .'
+				bat 'docker build -t aln505/sspr4:latest .'
 			}
 		}
         stage('Test') {
             steps {
 				bat 'FOR /F "tokens=*" %%i IN (\'docker ps -a -q\') DO docker stop %%i'
 				bat 'docker rm "test_sspr"'
-				bat 'docker run -d --name "test_sspr" mlnrzm/sspr4:latest bash'
+				bat 'docker run -d --name "test_sspr" aln505/sspr4:latest bash'
 				bat 'docker exec "test_sspr" sh -c "dotnet vstest TestProject.dll"'
 				bat 'docker stop "test_sspr"'
             }
@@ -25,9 +25,9 @@ pipeline {
 
         stage("Push Image To Docker Hub") {
             steps {
-                withCredentials([string(credentialsId: 'sspr_4', variable: 'sspr4')]) {
-                    bat "docker login --username mlnrzm --password ${sspr4}"
-                    bat 'docker push mlnrzm/sspr4:latest'
+                withCredentials([string(credentialsId: 'aln505', variable: 'aln505')]) {
+                    bat "docker login --username aln505 --password ${aln505}"
+                    bat 'docker push aln505/sspr4:latest'
                 }
             }
         }
