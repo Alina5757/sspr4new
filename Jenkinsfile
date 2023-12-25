@@ -12,7 +12,7 @@ pipeline {
 
 			steps {
 				echo "start stage - Build!!!!"
-				bat 'docker build -t aln505/sspr4:latest .'
+				bat 'docker build -t Alina5757/sspr4:latest .'
 			}
 		}
         stage('Test') {
@@ -20,7 +20,7 @@ pipeline {
 		                echo "start stage - Test!!!!!"
 				bat 'FOR /F "tokens=*" %%i IN (\'docker ps -a -q\') DO docker stop %%i'
 				bat 'docker rm "test_sspr"'
-				bat 'docker run -d --name "test_sspr" aln505/sspr4:latest bash'
+				bat 'docker run -d --name "test_sspr" Alina5757/sspr4:latest bash'
 				bat 'docker exec "test_sspr" sh -c "dotnet vstest TestProject.dll"'
 				bat 'docker stop "test_sspr"'
             }
@@ -29,9 +29,9 @@ pipeline {
         stage("Push Image To Docker Hub") {
             steps {
 		echo "start stage - Push To Git!!!!"
-                withCredentials([string(credentialsId: 'dockerhub', variable: 'aln505')]) {
-                    bat "docker login --username aln505 --password ${aln505}"
-                    bat 'docker push aln505/sspr4:latest'
+                withCredentials([string(credentialsId: 'dockerhub', variable: 'sspr4')]) {
+                    bat "docker login --username Alina5757 --password ${sspr4}"
+                    bat 'docker push Alina5757/sspr4:latest'
                 }
             }
         }
